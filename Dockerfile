@@ -7,8 +7,8 @@ ENV PYTHONHASHSEED=1337
 RUN apt update && yes | apt upgrade
 RUN pip install --upgrade pip
 
-#COPY requirements.txt .
-#RUN pip install -r requirements.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 # Create the user
 ARG USERNAME=pablo

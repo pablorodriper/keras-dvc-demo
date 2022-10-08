@@ -1,0 +1,26 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: python src/make_dataset.py
+    deps:
+    - path: data/raw_data/
+      md5: 020c1589a38027f4a090d89431539fe0.dir
+      size: 50132904
+      nfiles: 4596
+    - path: src/make_dataset.py
+      md5: f50aad8041869f5da0f565e22eacace9
+      size: 733
+    params:
+      params.yaml:
+        common:
+          seed: 1337
+          raw_data_path: data/raw_data/
+          split_data_path: data/split_data/
+        split:
+          train_split: 0.7
+          validation_split: 0.3
+    outs:
+    - path: data/split_data/
+      md5: 9d5a0652e69499e3e589eca890b9375f.dir
+      size: 50132904
+      nfiles: 4596

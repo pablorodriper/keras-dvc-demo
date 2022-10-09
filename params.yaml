@@ -2,20 +2,23 @@ common:
   seed: 1337
   raw_data_path: data/raw_data/
   split_data_path: data/split_data/
+  metrics_path: metrics/
 
 split:
   train_split: 0.7
   validation_split: 0.3
 
 train:
+  image_size:
+  - 224
+  - 224
   epochs: 3
   batch_size: 16
   learning_rate: 0.01
   data_path: data/split_data/train/
   model_pb_path: models/pb/
-  image_size:
-  - 224
-  - 224
+  metrics_path: metrics/metrics_train.json
+
 
 eval:
   data_path: data/split_data/val/

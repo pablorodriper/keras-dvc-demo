@@ -1,9 +1,13 @@
+import json
+import os
+
 import dvc.api
+import matplotlib.pyplot as plt
 from tensorflow.keras import Sequential
+from tensorflow.keras.applications import EfficientNetV2B0 as EfficientNet
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.utils import image_dataset_from_directory
-from tensorflow.keras.applications import EfficientNetV2B0 as EfficientNet
 
 
 def load_dataset(params, dataset_name):
@@ -66,6 +70,11 @@ def train_model(params, model, train_data, val_data):
     return history
 
 
+def save_metrics(params, history):
+    with open(params["train"]["metrics_path"], 'w') as outfile:
+        json.dump({"accuracy": history.history['accuracy'][-1],
+                   "val_accuracy": history.history['val_accuracy'][-1]}, 
+                  outfile)
 def save_model(params, model):
     """
     Save model to disk in .pb format
@@ -81,4 +90,5 @@ if __name__ == "__main__":
 
     model = define_model(params)
     history = train_model(params, model, train_data, val_data)
+    save_metrics(params, history)
     save_model(params, model)

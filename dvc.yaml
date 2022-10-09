@@ -9,3 +9,14 @@ stages:
     - split
     outs:
     - ${common.split_data_path}
+  train:
+    cmd: python src/train.py
+    deps:
+    - src/train.py
+    - ${common.split_data_path}
+    params:
+    - common
+    - train
+    - eval
+    outs:
+    - ${train.model_pb_path}

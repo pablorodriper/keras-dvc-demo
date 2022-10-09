@@ -6,3 +6,16 @@ common:
 split:
   train_split: 0.7
   validation_split: 0.3
+
+train:
+  epochs: 3
+  batch_size: 16
+  learning_rate: 0.01
+  data_path: data/split_data/train/
+  model_pb_path: models/pb/
+  image_size:
+  - 224
+  - 224
+
+eval:
+  data_path: data/split_data/val/

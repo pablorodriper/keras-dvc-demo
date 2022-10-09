@@ -9,6 +9,7 @@ stages:
     - split
     outs:
     - ${common.split_data_path}
+
   train:
     cmd: python src/train.py
     deps:

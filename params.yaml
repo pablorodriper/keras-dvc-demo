@@ -8,13 +8,14 @@ common:
 split:
   train_split: 0.7
   validation_split: 0.3
+  metrics_path: metrics/metrics_dataset.json
 
 train:
   image_size:
   - 224
   - 224
-  epochs: 3
-  batch_size: 16
+  epochs: 10
+  batch_size: 8
   learning_rate: 0.01
   data_path: data/split_data/train/
   model_pb_path: models/pb/

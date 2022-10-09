@@ -32,8 +32,8 @@ stages:
       size: 50132904
       nfiles: 4596
     - path: src/train.py
-      md5: 2c48133fd5fdd1f62e5472a812c42335
-      size: 2459
+      md5: 7b16db7babcd9f14cf9ba150ae3a5bf7
+      size: 2470
     params:
       params.yaml:
         common:
@@ -53,6 +53,6 @@ stages:
           - 224
     outs:
     - path: models/pb/
-      md5: e2bdbbba2ec5a410331574330c389d81.dir
+      md5: 5a01427fcf065895d50778310d1072b8.dir
       size: 43821186
       nfiles: 4

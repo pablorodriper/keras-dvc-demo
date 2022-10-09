@@ -5,35 +5,38 @@ from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.utils import image_dataset_from_directory
 from tensorflow.keras.applications import EfficientNetV2B0 as EfficientNet
 
-def load_datasets(params):
+
+def load_dataset(params, dataset_name):
+    """
+    Load dataset from folder using DVC params
+
+    Args:
+        params (dict): DVC params
+        dataset_name (str): name of the dataset to load
+
+    Returns:
+        dataset: data generator
+    """
     seed=params["common"]["seed"]
 
     # Create data generator from folder
-    image_size = tuple(params["train"]["image_size"])
-
-    train_data = image_dataset_from_directory(
-        directory=params["train"]["data_path"],
+    dataset = image_dataset_from_directory(
+        directory=params[dataset_name]["data_path"],
         labels='inferred',
         label_mode='categorical',
         color_mode='rgb',
         batch_size=params["train"]["batch_size"],
-        image_size=image_size, # https://github.com/sebastian-sz/efficientnet-v2-keras#input-shapes
+        image_size=tuple(params["train"]["image_size"]), # https://github.com/sebastian-sz/efficientnet-v2-keras#input-shapes
         #crop_to_aspect_ratio=True,
         seed=seed)
 
-    val_data = image_dataset_from_directory(
-        directory=params["eval"]["data_path"],
-        labels='inferred',
-        label_mode='categorical',
-        color_mode='rgb',
-        batch_size=params["train"]["batch_size"],
-        image_size=image_size,
-        seed=seed)
-
-    return train_data, val_data
+    return dataset
 
 
 def define_model(params):
+    """
+    Define model architecture
+    """
     
     image_size = tuple(params["train"]["image_size"])
 
@@ -50,7 +53,11 @@ def define_model(params):
     
     return model
 
+
 def train_model(params, model, train_data, val_data):
+    """
+    Train model
+    """
     history = model.fit(train_data, 
                         epochs=params["train"]["epochs"], # 2, 
                         validation_data=val_data) 
@@ -60,12 +67,18 @@ def train_model(params, model, train_data, val_data):
 
 
 def save_model(params, model):
+    """
+    Save model to disk in .pb format
+    """
     model.save(params["train"]["model_pb_path"])
+
 
 if __name__ == "__main__":
     params = dvc.api.params_show(stages="train")
     
-    train_data, val_data = load_datasets(params) # TODO: Change to call two times load_dataset(params, dataset_name)
+    train_data = load_dataset(params, "train") 
+    val_data = load_dataset(params, "eval")
+
     model = define_model(params)
     history = train_model(params, model, train_data, val_data)
     save_model(params, model)

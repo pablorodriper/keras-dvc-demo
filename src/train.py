@@ -71,10 +71,47 @@ def train_model(params, model, train_data, val_data):
 
 
 def save_metrics(params, history):
+    """
+    Save DVC metrics to disk
+    """
     with open(params["train"]["metrics_path"], 'w') as outfile:
         json.dump({"accuracy": history.history['accuracy'][-1],
                    "val_accuracy": history.history['val_accuracy'][-1]}, 
                   outfile)
+
+
+def save_plots(params, history):
+    """
+    Save accuracy and loss plots to disk
+    """
+    if not os.path.exists(params["common"]["plots_path"]):
+        os.makedirs(params["common"]["plots_path"])
+
+    # Accuracy
+    plt.figure(0)
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.ylim(0.8, 1.02)
+    plt.grid(axis='y', color='0.95')
+    plt.legend(['train', 'val'], loc='upper left')
+    plt.savefig(params["train"]["accuracy_plot_path"])
+
+    # Loss
+    plt.figure(1)
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.ylim(0, 0.4)
+    plt.grid(axis='y', color='0.95')
+    plt.legend(['train', 'val'], loc='upper left')
+    plt.savefig(params["train"]["loss_plot_path"])
+
+
 def save_model(params, model):
     """
     Save model to disk in .pb format
@@ -91,4 +128,5 @@ if __name__ == "__main__":
     model = define_model(params)
     history = train_model(params, model, train_data, val_data)
     save_metrics(params, history)
+    save_plots(params, history)
     save_model(params, model)

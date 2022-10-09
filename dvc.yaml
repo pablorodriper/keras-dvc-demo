@@ -22,3 +22,6 @@ stages:
     - ${train.model_pb_path}
     metrics:
     - ${train.metrics_path}
+    plots:
+    - ${train.loss_plot_path}
+    - ${train.accuracy_plot_path}

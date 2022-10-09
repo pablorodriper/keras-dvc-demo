@@ -3,6 +3,7 @@ common:
   raw_data_path: data/raw_data/
   split_data_path: data/split_data/
   metrics_path: metrics/
+  plots_path: plots/
 
 split:
   train_split: 0.7
@@ -18,6 +19,8 @@ train:
   data_path: data/split_data/train/
   model_pb_path: models/pb/
   metrics_path: metrics/metrics_train.json
+  loss_plot_path: plots/model_loss.png
+  accuracy_plot_path: plots/model_accuracy.png
 
 
 eval:

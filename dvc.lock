@@ -8,8 +8,8 @@ stages:
       size: 50132904
       nfiles: 4596
     - path: src/make_dataset.py
-      md5: f50aad8041869f5da0f565e22eacace9
-      size: 733
+      md5: cdc290f69a46873c306ca0ffb93966df
+      size: 679
     params:
       params.yaml:
         common:
@@ -34,8 +34,8 @@ stages:
       size: 50132904
       nfiles: 4596
     - path: src/train.py
-      md5: 8a88f38316bd2d04bca26e22e75194c4
-      size: 3719
+      md5: bc00b4ba8f6a1ca9daf6eaf5042083e6
+      size: 3822
     params:
       params.yaml:
         common:
@@ -59,7 +59,16 @@ stages:
           loss_plot_path: plots/model_loss.png
           accuracy_plot_path: plots/model_accuracy.png
     outs:
+    - path: metrics/metrics_train.json
+      md5: 3077a95d3f230f11d81ae70b716bec1d
+      size: 68
     - path: models/pb/
-      md5: acb1a9a8ff83db9b030c9def971de922.dir
+      md5: 2e26a8b083a3c846bb762d3a2556ab0f.dir
       size: 43821186
       nfiles: 4
+    - path: plots/model_accuracy.png
+      md5: 8b4d7e9e6e1b12f0e0aa2e7148cdabb2
+      size: 25644
+    - path: plots/model_loss.png
+      md5: fbf0cf0ae8134c73e65808caa511ba31
+      size: 23475

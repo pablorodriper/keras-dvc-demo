@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tensorflow:22.06-tf2-py3
+FROM nvcr.io/nvidia/tensorflow:22.09-tf2-py3
 
 # More consistent floating point operations between executions
 ENV TF_ENABLE_ONEDNN_OPTS=0

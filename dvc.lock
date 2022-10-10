@@ -8,19 +8,68 @@ stages:
       size: 50132904
       nfiles: 4596
     - path: src/make_dataset.py
-      md5: f50aad8041869f5da0f565e22eacace9
-      size: 733
+      md5: dc72c0e22e673a02b168ba22a74698a2
+      size: 1222
     params:
       params.yaml:
         common:
           seed: 1337
           raw_data_path: data/raw_data/
           split_data_path: data/split_data/
+          metrics_path: metrics/
+          plots_path: plots/
         split:
           train_split: 0.7
           validation_split: 0.3
+          metrics_path: metrics/metrics_dataset.json
     outs:
     - path: data/split_data/
       md5: 9d5a0652e69499e3e589eca890b9375f.dir
       size: 50132904
       nfiles: 4596
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/split_data/
+      md5: 9d5a0652e69499e3e589eca890b9375f.dir
+      size: 50132904
+      nfiles: 4596
+    - path: src/train.py
+      md5: bc00b4ba8f6a1ca9daf6eaf5042083e6
+      size: 3822
+    params:
+      params.yaml:
+        common:
+          seed: 1337
+          raw_data_path: data/raw_data/
+          split_data_path: data/split_data/
+          metrics_path: metrics/
+          plots_path: plots/
+        eval:
+          data_path: data/split_data/val/
+        train:
+          image_size:
+          - 224
+          - 224
+          epochs: 10
+          batch_size: 8
+          learning_rate: 0.01
+          data_path: data/split_data/train/
+          model_pb_path: models/pb/
+          metrics_path: metrics/metrics_train.json
+          loss_plot_path: plots/model_loss.png
+          accuracy_plot_path: plots/model_accuracy.png
+    outs:
+    - path: metrics/metrics_train.json
+      md5: 17572de750265f4b536b8120901d26bd
+      size: 54
+    - path: models/pb/
+      md5: eef029c6e76fcb10da95c24708cbe6ef.dir
+      size: 43821186
+      nfiles: 4
+    - path: plots/model_accuracy.png
+      md5: d3e1a90afb78e9050107aecb70610e2c
+      size: 23909
+    - path: plots/model_loss.png
+      md5: 19608b39fa99839eabe2b4ecbb9a7edc
+      size: 21325

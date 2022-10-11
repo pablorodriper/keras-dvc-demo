@@ -4,9 +4,9 @@ stages:
     cmd: python src/make_dataset.py
     deps:
     - path: data/raw_data/
-      md5: 020c1589a38027f4a090d89431539fe0.dir
-      size: 50132904
-      nfiles: 4596
+      md5: 4ef14f6cd35d554d76a9f19807225046.dir
+      size: 50116999
+      nfiles: 4594
     - path: src/make_dataset.py
       md5: e17c4009c9216798fe4e5269d55eede0
       size: 1334
@@ -25,19 +25,19 @@ stages:
           metrics_path: metrics/metrics_dataset.json
     outs:
     - path: data/split_data/
-      md5: 96b7c097d3e140ced7668ad53e074235.dir
-      size: 50132904
-      nfiles: 4596
+      md5: c72cf0a7cd52afec59bdf211a7c6d431.dir
+      size: 50116999
+      nfiles: 4594
   train:
     cmd: python src/train_model.py
     deps:
     - path: data/split_data/train/
-      md5: 1ac52f6a2395f1fc02f3abd6ed0bdf57.dir
-      size: 29795516
-      nfiles: 2737
+      md5: 6ab876d9073d03a68e7141a7c1126688.dir
+      size: 29788121
+      nfiles: 2736
     - path: data/split_data/val/
-      md5: 7bb1ae8d6bff7b6282a43e4c5248e28c.dir
-      size: 9826815
+      md5: 3ffa7ce05f74788f81faa1bd0f033400.dir
+      size: 9813849
       nfiles: 897
     - path: src/train_model.py
       md5: 916a3571a946b4c4d107d692c669b588
@@ -68,27 +68,27 @@ stages:
           accuracy_plot_path: plots/model_accuracy.png
     outs:
     - path: metrics/metrics_train.json
-      md5: ce8fedea9da1dc445fc1690e60699f04
-      size: 68
+      md5: c18dd5631080d10eedaac245a9c2f96e
+      size: 69
     - path: models/pb/
-      md5: 53a5ec855c76f961fe0ca0d60b18eec8.dir
+      md5: 909e870acd163bedcb6faad422451a69.dir
       size: 43821186
       nfiles: 4
     - path: plots/model_accuracy.png
-      md5: bae5099a87fda95586b1e09adb265230
-      size: 26113
+      md5: e41d057b023600878a4cc34a88152423
+      size: 25684
     - path: plots/model_loss.png
-      md5: 003cd1d12a6eb42764d17bcd191ef388
-      size: 22851
+      md5: 33f2e91af563239d7639058db6e3704a
+      size: 23430
   test:
     cmd: python src/test_model.py
     deps:
     - path: data/split_data/test/
-      md5: 551f377f01954adbe6b02d53b4519fdc.dir
-      size: 10510573
-      nfiles: 962
+      md5: ca916743c74e6643613d6e4890f88ed2.dir
+      size: 10515029
+      nfiles: 961
     - path: models/pb/
-      md5: 53a5ec855c76f961fe0ca0d60b18eec8.dir
+      md5: 909e870acd163bedcb6faad422451a69.dir
       size: 43821186
       nfiles: 4
     - path: src/test_model.py
@@ -114,8 +114,8 @@ stages:
           confusion_matrix_path: plots/conf_matrix_test.png
     outs:
     - path: metrics/metrics_test.json
-      md5: 23cc808aae9fe215fcd9357eedc042fc
-      size: 5863
+      md5: 3aa8db8cf7bfe01d1b82b972a9c6e28d
+      size: 5847
     - path: plots/conf_matrix_test.png
-      md5: 660a4581e44d6563838ff90a1019bdbc
-      size: 38536
+      md5: 42e94cfb6c1a675d2e824108af970f53
+      size: 38439

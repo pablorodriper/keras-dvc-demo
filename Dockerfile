@@ -9,6 +9,8 @@ RUN pip install --upgrade pip
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+# Fix tensorflow incompatibility
+RUN pip install protobuf==3.20.0
 
 # Create the user
 ARG USERNAME=pablo

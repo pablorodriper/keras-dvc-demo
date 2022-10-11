@@ -6,8 +6,9 @@ common:
   plots_path: plots/
 
 split:
-  train_split: 0.7
-  validation_split: 0.3
+  train_split: 0.6
+  validation_split: 0.2
+  test_split: 0.2
   metrics_path: metrics/metrics_dataset.json
 
 train:

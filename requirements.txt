@@ -1,2 +1,3 @@
 dvc[gdrive]
 split-folders
+scikit-learn>=1.0

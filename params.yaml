@@ -29,3 +29,8 @@ train:
 eval:
   data_path: data/split_data/val/
   confusion_matrix_path: plots/conf_matrix_val.png
+
+test:
+  data_path: data/split_data/test/
+  metrics_path: metrics/metrics_test.json
+  confusion_matrix_path: plots/conf_matrix_test.png

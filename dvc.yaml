@@ -28,3 +28,18 @@ stages:
     plots:
     - ${train.loss_plot_path}
     - ${train.accuracy_plot_path}
+
+  test:
+    cmd: python src/test_model.py
+    deps:
+    - src/test_model.py
+    - ${test.data_path}
+    - ${model.model_pb_path}
+    params:
+    - common
+    - model
+    - test
+    metrics:
+    - ${test.metrics_path}
+    plots:
+    - ${test.confusion_matrix_path}

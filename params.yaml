@@ -11,19 +11,20 @@ split:
   test_split: 0.2
   metrics_path: metrics/metrics_dataset.json
 
-train:
+model:
+  model_pb_path: models/pb/
   image_size:
   - 224
   - 224
-  epochs: 10
   batch_size: 8
+
+train:
+  epochs: 3
   learning_rate: 0.01
   data_path: data/split_data/train/
-  model_pb_path: models/pb/
   metrics_path: metrics/metrics_train.json
   loss_plot_path: plots/model_loss.png
   accuracy_plot_path: plots/model_accuracy.png
-
 
 eval:
   data_path: data/split_data/val/

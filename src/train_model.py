@@ -7,34 +7,8 @@ from tensorflow.keras import Sequential
 from tensorflow.keras.applications import EfficientNetV2B0 as EfficientNet
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras.optimizers import SGD
-from tensorflow.keras.utils import image_dataset_from_directory
 
-
-def load_dataset(params, dataset_name):
-    """
-    Load dataset from folder using DVC params
-
-    Args:
-        params (dict): DVC params
-        dataset_name (str): name of the dataset to load
-
-    Returns:
-        dataset: data generator
-    """
-    seed=params["common"]["seed"]
-
-    # Create data generator from folder
-    dataset = image_dataset_from_directory(
-        directory=params[dataset_name]["data_path"],
-        labels='inferred',
-        label_mode='categorical',
-        color_mode='rgb',
-        batch_size=params["train"]["batch_size"],
-        image_size=tuple(params["train"]["image_size"]), # https://github.com/sebastian-sz/efficientnet-v2-keras#input-shapes
-        #crop_to_aspect_ratio=True,
-        seed=seed)
-
-    return dataset
+from utils import load_dataset
 
 
 def define_model(params):
@@ -42,7 +16,7 @@ def define_model(params):
     Define model architecture
     """
     
-    image_size = tuple(params["train"]["image_size"])
+    image_size = tuple(params["model"]["image_size"])
 
     model = Sequential()
     model.add(EfficientNet(include_top=False, 
@@ -116,7 +90,7 @@ def save_model(params, model):
     """
     Save model to disk in .pb format
     """
-    model.save(params["train"]["model_pb_path"])
+    model.save(params["model"]["model_pb_path"])
 
 
 if __name__ == "__main__":

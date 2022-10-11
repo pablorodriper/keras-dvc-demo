@@ -8,8 +8,8 @@ stages:
       size: 50132904
       nfiles: 4596
     - path: src/make_dataset.py
-      md5: dc72c0e22e673a02b168ba22a74698a2
-      size: 1222
+      md5: e17c4009c9216798fe4e5269d55eede0
+      size: 1334
     params:
       params.yaml:
         common:
@@ -19,24 +19,29 @@ stages:
           metrics_path: metrics/
           plots_path: plots/
         split:
-          train_split: 0.7
-          validation_split: 0.3
+          train_split: 0.6
+          validation_split: 0.2
+          test_split: 0.2
           metrics_path: metrics/metrics_dataset.json
     outs:
     - path: data/split_data/
-      md5: 9d5a0652e69499e3e589eca890b9375f.dir
+      md5: 96b7c097d3e140ced7668ad53e074235.dir
       size: 50132904
       nfiles: 4596
   train:
-    cmd: python src/train.py
+    cmd: python src/train_model.py
     deps:
-    - path: data/split_data/
-      md5: 9d5a0652e69499e3e589eca890b9375f.dir
-      size: 50132904
-      nfiles: 4596
-    - path: src/train.py
-      md5: bc00b4ba8f6a1ca9daf6eaf5042083e6
-      size: 3822
+    - path: data/split_data/train/
+      md5: 1ac52f6a2395f1fc02f3abd6ed0bdf57.dir
+      size: 29795516
+      nfiles: 2737
+    - path: data/split_data/val/
+      md5: 7bb1ae8d6bff7b6282a43e4c5248e28c.dir
+      size: 9826815
+      nfiles: 897
+    - path: src/train_model.py
+      md5: 916a3571a946b4c4d107d692c669b588
+      size: 3029
     params:
       params.yaml:
         common:
@@ -47,29 +52,70 @@ stages:
           plots_path: plots/
         eval:
           data_path: data/split_data/val/
-        train:
+          confusion_matrix_path: plots/conf_matrix_val.png
+        model:
+          model_pb_path: models/pb/
           image_size:
           - 224
           - 224
-          epochs: 10
           batch_size: 8
+        train:
+          epochs: 3
           learning_rate: 0.01
           data_path: data/split_data/train/
-          model_pb_path: models/pb/
           metrics_path: metrics/metrics_train.json
           loss_plot_path: plots/model_loss.png
           accuracy_plot_path: plots/model_accuracy.png
     outs:
     - path: metrics/metrics_train.json
-      md5: 17572de750265f4b536b8120901d26bd
-      size: 54
+      md5: ce8fedea9da1dc445fc1690e60699f04
+      size: 68
     - path: models/pb/
-      md5: eef029c6e76fcb10da95c24708cbe6ef.dir
+      md5: 53a5ec855c76f961fe0ca0d60b18eec8.dir
       size: 43821186
       nfiles: 4
     - path: plots/model_accuracy.png
-      md5: d3e1a90afb78e9050107aecb70610e2c
-      size: 23909
+      md5: bae5099a87fda95586b1e09adb265230
+      size: 26113
     - path: plots/model_loss.png
-      md5: 19608b39fa99839eabe2b4ecbb9a7edc
-      size: 21325
+      md5: 003cd1d12a6eb42764d17bcd191ef388
+      size: 22851
+  test:
+    cmd: python src/test_model.py
+    deps:
+    - path: data/split_data/test/
+      md5: 551f377f01954adbe6b02d53b4519fdc.dir
+      size: 10510573
+      nfiles: 962
+    - path: models/pb/
+      md5: 53a5ec855c76f961fe0ca0d60b18eec8.dir
+      size: 43821186
+      nfiles: 4
+    - path: src/test_model.py
+      md5: e079e0cbea577b0bcaca369df8464cff
+      size: 1658
+    params:
+      params.yaml:
+        common:
+          seed: 1337
+          raw_data_path: data/raw_data/
+          split_data_path: data/split_data/
+          metrics_path: metrics/
+          plots_path: plots/
+        model:
+          model_pb_path: models/pb/
+          image_size:
+          - 224
+          - 224
+          batch_size: 8
+        test:
+          data_path: data/split_data/test/
+          metrics_path: metrics/metrics_test.json
+          confusion_matrix_path: plots/conf_matrix_test.png
+    outs:
+    - path: metrics/metrics_test.json
+      md5: 23cc808aae9fe215fcd9357eedc042fc
+      size: 5863
+    - path: plots/conf_matrix_test.png
+      md5: 660a4581e44d6563838ff90a1019bdbc
+      size: 38536

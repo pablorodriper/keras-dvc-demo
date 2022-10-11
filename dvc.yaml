@@ -11,16 +11,18 @@ stages:
     - ${common.split_data_path}
 
   train:
-    cmd: python src/train.py
+    cmd: python src/train_model.py
     deps:
-    - src/train.py
-    - ${common.split_data_path}
+    - src/train_model.py
+    - ${train.data_path}
+    - ${eval.data_path}
     params:
     - common
+    - model
     - train
     - eval
     outs:
-    - ${train.model_pb_path}
+    - ${model.model_pb_path}
     metrics:
     - ${train.metrics_path}
     plots:

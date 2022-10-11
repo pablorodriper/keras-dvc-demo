@@ -28,3 +28,4 @@ train:
 
 eval:
   data_path: data/split_data/val/
+  confusion_matrix_path: plots/conf_matrix_val.png

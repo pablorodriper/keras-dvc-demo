@@ -6,23 +6,31 @@ common:
   plots_path: plots/
 
 split:
-  train_split: 0.7
-  validation_split: 0.3
+  train_split: 0.6
+  validation_split: 0.2
+  test_split: 0.2
   metrics_path: metrics/metrics_dataset.json
 
-train:
+model:
+  model_pb_path: models/pb/
   image_size:
   - 224
   - 224
-  epochs: 10
   batch_size: 8
+
+train:
+  epochs: 3
   learning_rate: 0.01
   data_path: data/split_data/train/
-  model_pb_path: models/pb/
   metrics_path: metrics/metrics_train.json
   loss_plot_path: plots/model_loss.png
   accuracy_plot_path: plots/model_accuracy.png
 
-
 eval:
   data_path: data/split_data/val/
+  confusion_matrix_path: plots/conf_matrix_val.png
+
+test:
+  data_path: data/split_data/test/
+  metrics_path: metrics/metrics_test.json
+  confusion_matrix_path: plots/conf_matrix_test.png

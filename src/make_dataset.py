@@ -13,7 +13,8 @@ def split_data(params, input_data_folder):
     ratio(input_data_folder, 
           params["common"]["split_data_path"], 
           ratio=(params["split"]["train_split"], 
-                 params["split"]["validation_split"]), 
+                 params["split"]["validation_split"], 
+                 params["split"]["test_split"]), 
           seed=params["common"]["seed"])
 
 
@@ -23,7 +24,8 @@ def save_metrics(params):
     """
     metrics = {
         "train size": sum([len(files) for r, d, files in os.walk(params["common"]["split_data_path"] + "train/")]),
-        "val size":  sum([len(files) for r, d, files in os.walk(params["common"]["split_data_path"] + "val/")])
+        "val size":  sum([len(files) for r, d, files in os.walk(params["common"]["split_data_path"] + "val/")]),
+        "test size":  sum([len(files) for r, d, files in os.walk(params["common"]["split_data_path"] + "test/")])
     }
     print(metrics)
 

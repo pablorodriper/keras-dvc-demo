@@ -11,18 +11,35 @@ stages:
     - ${common.split_data_path}
 
   train:
-    cmd: python src/train.py
+    cmd: python src/train_model.py
     deps:
-    - src/train.py
-    - ${common.split_data_path}
+    - src/train_model.py
+    - ${train.data_path}
+    - ${eval.data_path}
     params:
     - common
+    - model
     - train
     - eval
     outs:
-    - ${train.model_pb_path}
+    - ${model.model_pb_path}
     metrics:
     - ${train.metrics_path}
     plots:
     - ${train.loss_plot_path}
     - ${train.accuracy_plot_path}
+
+  test:
+    cmd: python src/test_model.py
+    deps:
+    - src/test_model.py
+    - ${test.data_path}
+    - ${model.model_pb_path}
+    params:
+    - common
+    - model
+    - test
+    metrics:
+    - ${test.metrics_path}
+    plots:
+    - ${test.confusion_matrix_path}

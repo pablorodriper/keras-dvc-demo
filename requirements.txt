@@ -1,3 +1,4 @@
 dvc[gdrive]
 split-folders
 scikit-learn>=1.0
+tf2onnx==1.8.4

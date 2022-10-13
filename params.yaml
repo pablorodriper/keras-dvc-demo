@@ -1,7 +1,5 @@
 common:
   seed: 1337
-  raw_data_path: data/raw_data/
-  split_data_path: data/split_data/
   metrics_path: metrics/
   plots_path: plots/
 
@@ -9,6 +7,8 @@ split:
   train_split: 0.6
   validation_split: 0.2
   test_split: 0.2
+  raw_data_path: data/raw_data/
+  split_data_path: data/split_data/
   metrics_path: metrics/metrics_dataset.json
 
 model:

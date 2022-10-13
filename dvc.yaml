@@ -3,12 +3,17 @@ stages:
     cmd: python src/make_dataset.py
     deps:
     - src/make_dataset.py
-    - ${common.raw_data_path}
+    - ${split.raw_data_path}
     params:
-    - common
+    - common.seed
     - split
+    - train.data_path
+    - eval.data_path
+    - test.data_path
     outs:
-    - ${common.split_data_path}
+    - ${train.data_path}
+    - ${eval.data_path}
+    - ${test.data_path}
 
   train:
     cmd: python src/train_model.py

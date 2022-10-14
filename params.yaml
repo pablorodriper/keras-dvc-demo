@@ -12,7 +12,9 @@ split:
   metrics_path: metrics/metrics_dataset.json
 
 model:
+  model_name: efficientnetv2_b0
   model_pb_path: models/pb/
+  model_onnx_path: models/onnx/model.onnx
   image_size:
   - 224
   - 224

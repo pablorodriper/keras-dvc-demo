@@ -1,0 +1,38 @@
+common:
+  seed: 1337
+  metrics_path: metrics/
+  plots_path: plots/
+
+split:
+  train_split: 0.6
+  validation_split: 0.2
+  test_split: 0.2
+  raw_data_path: data/raw_data/
+  split_data_path: data/split_data/
+  metrics_path: metrics/metrics_dataset.json
+
+model:
+  model_name: efficientnetv2_b0
+  model_pb_path: models/pb/
+  model_onnx_path: models/onnx/model.onnx
+  image_size:
+  - 224
+  - 224
+  batch_size: 8
+
+train:
+  epochs: 3
+  learning_rate: 0.01
+  data_path: data/split_data/train/
+  metrics_path: metrics/metrics_train.json
+  loss_plot_path: plots/model_loss.png
+  accuracy_plot_path: plots/model_accuracy.png
+
+eval:
+  data_path: data/split_data/val/
+  confusion_matrix_path: plots/conf_matrix_val.png
+
+test:
+  data_path: data/split_data/test/
+  metrics_path: metrics/metrics_test.json
+  confusion_matrix_path: plots/conf_matrix_test.png

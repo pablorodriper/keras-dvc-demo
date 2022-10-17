@@ -1,0 +1,142 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: python src/make_dataset.py
+    deps:
+    - path: data/raw_data/
+      md5: 4ef14f6cd35d554d76a9f19807225046.dir
+      size: 50116999
+      nfiles: 4594
+    - path: src/make_dataset.py
+      md5: 2e898e2a1ba37254c1a279530cc16fb8
+      size: 1279
+    params:
+      params.yaml:
+        common.seed: 1337
+        eval.data_path: data/split_data/val/
+        split:
+          train_split: 0.6
+          validation_split: 0.2
+          test_split: 0.2
+          raw_data_path: data/raw_data/
+          split_data_path: data/split_data/
+          metrics_path: metrics/metrics_dataset.json
+        test.data_path: data/split_data/test/
+        train.data_path: data/split_data/train/
+    outs:
+    - path: data/split_data/test/
+      md5: ca916743c74e6643613d6e4890f88ed2.dir
+      size: 10515029
+      nfiles: 961
+    - path: data/split_data/train/
+      md5: 6ab876d9073d03a68e7141a7c1126688.dir
+      size: 29788121
+      nfiles: 2736
+    - path: data/split_data/val/
+      md5: 3ffa7ce05f74788f81faa1bd0f033400.dir
+      size: 9813849
+      nfiles: 897
+  train:
+    cmd: python src/train_model.py
+    deps:
+    - path: data/split_data/train/
+      md5: 6ab876d9073d03a68e7141a7c1126688.dir
+      size: 29788121
+      nfiles: 2736
+    - path: data/split_data/val/
+      md5: 3ffa7ce05f74788f81faa1bd0f033400.dir
+      size: 9813849
+      nfiles: 897
+    - path: src/train_model.py
+      md5: 916a3571a946b4c4d107d692c669b588
+      size: 3029
+    params:
+      params.yaml:
+        common:
+          seed: 1337
+          metrics_path: metrics/
+          plots_path: plots/
+        eval:
+          data_path: data/split_data/val/
+          confusion_matrix_path: plots/conf_matrix_val.png
+        model:
+          model_name: efficientnetv2_b0
+          model_pb_path: models/pb/
+          model_onnx_path: models/onnx/model.onnx
+          image_size:
+          - 224
+          - 224
+          batch_size: 8
+        train:
+          epochs: 3
+          learning_rate: 0.01
+          data_path: data/split_data/train/
+          metrics_path: metrics/metrics_train.json
+          loss_plot_path: plots/model_loss.png
+          accuracy_plot_path: plots/model_accuracy.png
+    outs:
+    - path: metrics/metrics_train.json
+      md5: 751cdedb62315117bb361dcddab474f7
+      size: 69
+    - path: models/pb/
+      md5: 9253617c3be5edbc2876508469b9b3f5.dir
+      size: 43821186
+      nfiles: 4
+    - path: plots/model_accuracy.png
+      md5: 568dc610856b9eedc8a8d8c0f13e2a85
+      size: 25104
+    - path: plots/model_loss.png
+      md5: 8b7dda393710a71b8772560b40f8cb1f
+      size: 23553
+  test:
+    cmd: python src/test_model.py
+    deps:
+    - path: data/split_data/test/
+      md5: ca916743c74e6643613d6e4890f88ed2.dir
+      size: 10515029
+      nfiles: 961
+    - path: models/pb/
+      md5: 9253617c3be5edbc2876508469b9b3f5.dir
+      size: 43821186
+      nfiles: 4
+    - path: src/test_model.py
+      md5: e079e0cbea577b0bcaca369df8464cff
+      size: 1658
+    params:
+      params.yaml:
+        common:
+          seed: 1337
+          metrics_path: metrics/
+          plots_path: plots/
+        model:
+          model_name: efficientnetv2_b0
+          model_pb_path: models/pb/
+          model_onnx_path: models/onnx/model.onnx
+          image_size:
+          - 224
+          - 224
+          batch_size: 8
+        test:
+          data_path: data/split_data/test/
+          metrics_path: metrics/metrics_test.json
+          confusion_matrix_path: plots/conf_matrix_test.png
+    outs:
+    - path: metrics/metrics_test.json
+      md5: 505c1f425eb58d1fc94f56d570893972
+      size: 5892
+    - path: plots/conf_matrix_test.png
+      md5: 738bee98c0532823f87bfcbb2ec19306
+      size: 38712
+  model-to-onnx:
+    cmd: python -m tf2onnx.convert --saved-model models/pb/ --output models/onnx/model.onnx
+      --inputs efficientnetv2_b0_input:0 --inputs-as-nchw efficientnetv2_b0_input:0
+      --opset 13
+    deps:
+    - path: models/pb/
+      md5: 9253617c3be5edbc2876508469b9b3f5.dir
+      size: 43821186
+      nfiles: 4
+    outs:
+    - path: models/onnx/model.onnx
+      md5: dffdab019f606ca58b68afe854bddae4
+      size: 36051265

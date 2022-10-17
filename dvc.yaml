@@ -1,0 +1,57 @@
+stages:
+  make_dataset:
+    cmd: python src/make_dataset.py
+    deps:
+    - src/make_dataset.py
+    - ${split.raw_data_path}
+    params:
+    - common.seed
+    - split
+    - train.data_path
+    - eval.data_path
+    - test.data_path
+    outs:
+    - ${train.data_path}
+    - ${eval.data_path}
+    - ${test.data_path}
+
+  train:
+    cmd: python src/train_model.py
+    deps:
+    - src/train_model.py
+    - ${train.data_path}
+    - ${eval.data_path}
+    params:
+    - common
+    - model
+    - train
+    - eval
+    outs:
+    - ${model.model_pb_path}
+    metrics:
+    - ${train.metrics_path}
+    plots:
+    - ${train.loss_plot_path}
+    - ${train.accuracy_plot_path}
+
+  test:
+    cmd: python src/test_model.py
+    deps:
+    - src/test_model.py
+    - ${test.data_path}
+    - ${model.model_pb_path}
+    params:
+    - common
+    - model
+    - test
+    metrics:
+    - ${test.metrics_path}
+    plots:
+    - ${test.confusion_matrix_path}
+
+  model-to-onnx:
+    cmd: python -m tf2onnx.convert --saved-model ${model.model_pb_path} --output ${model.model_onnx_path} --inputs ${model.model_name}_input:0 --inputs-as-nchw ${model.model_name}_input:0 --opset 13
+    deps:
+    - ${model.model_pb_path}
+    outs:
+    - ${model.model_onnx_path}

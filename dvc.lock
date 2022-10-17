@@ -48,8 +48,8 @@ stages:
       size: 9813849
       nfiles: 897
     - path: src/train_model.py
-      md5: 916a3571a946b4c4d107d692c669b588
-      size: 3029
+      md5: 88b34608e25fc64480d6aeb1adef1bb3
+      size: 3086
     params:
       params.yaml:
         common:
@@ -75,19 +75,25 @@ stages:
           loss_plot_path: plots/model_loss.png
           accuracy_plot_path: plots/model_accuracy.png
     outs:
+    - path: .mlem/model/model
+      md5: b1903c0edbc0cf4ca40dad4c5d916654
+      size: 36666944
+    - path: .mlem/model/model.mlem
+      md5: c4ce0f1129ea72504269aecae6e61c65
+      size: 622
     - path: metrics/metrics_train.json
-      md5: 751cdedb62315117bb361dcddab474f7
-      size: 69
+      md5: ed3a6b8631791be490cb93a66e17b353
+      size: 67
     - path: models/pb/
-      md5: 9253617c3be5edbc2876508469b9b3f5.dir
-      size: 43821186
+      md5: 569f7f2a7a73bbf6a534ce704ecb9d38.dir
+      size: 43827737
       nfiles: 4
     - path: plots/model_accuracy.png
-      md5: 568dc610856b9eedc8a8d8c0f13e2a85
-      size: 25104
+      md5: 1a38e6b7f376efcc92abb638982d86c3
+      size: 25613
     - path: plots/model_loss.png
-      md5: 8b7dda393710a71b8772560b40f8cb1f
-      size: 23553
+      md5: a95775025dd2a532b00cb8d7ef41caf8
+      size: 23368
   test:
     cmd: python src/test_model.py
     deps:
@@ -96,8 +102,8 @@ stages:
       size: 10515029
       nfiles: 961
     - path: models/pb/
-      md5: 9253617c3be5edbc2876508469b9b3f5.dir
-      size: 43821186
+      md5: 569f7f2a7a73bbf6a534ce704ecb9d38.dir
+      size: 43827737
       nfiles: 4
     - path: src/test_model.py
       md5: e079e0cbea577b0bcaca369df8464cff
@@ -122,21 +128,21 @@ stages:
           confusion_matrix_path: plots/conf_matrix_test.png
     outs:
     - path: metrics/metrics_test.json
-      md5: 505c1f425eb58d1fc94f56d570893972
-      size: 5892
+      md5: 35afb971f1736be01dc8d24bcc2fe63c
+      size: 5904
     - path: plots/conf_matrix_test.png
-      md5: 738bee98c0532823f87bfcbb2ec19306
-      size: 38712
+      md5: a6d1070a39fd6503f8ff13682feea311
+      size: 38913
   model-to-onnx:
     cmd: python -m tf2onnx.convert --saved-model models/pb/ --output models/onnx/model.onnx
       --inputs efficientnetv2_b0_input:0 --inputs-as-nchw efficientnetv2_b0_input:0
       --opset 13
     deps:
     - path: models/pb/
-      md5: 9253617c3be5edbc2876508469b9b3f5.dir
-      size: 43821186
+      md5: 569f7f2a7a73bbf6a534ce704ecb9d38.dir
+      size: 43827737
       nfiles: 4
     outs:
     - path: models/onnx/model.onnx
-      md5: dffdab019f606ca58b68afe854bddae4
+      md5: 7079ace046a4cb9beca5e3bfc8a08e87
       size: 36051265

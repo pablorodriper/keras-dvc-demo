@@ -3,6 +3,7 @@ import os
 
 import dvc.api
 import matplotlib.pyplot as plt
+from mlem.api import save
 from tensorflow.keras import Sequential
 from tensorflow.keras.applications import EfficientNetV2B0 as EfficientNet
 from tensorflow.keras.layers import Dense, Flatten
@@ -90,6 +91,10 @@ def save_model(params, model):
     """
     Save model to disk in .pb format
     """
+    # Save model with MLEM
+    save(model, "model")
+
+    # Save model to models folder, where it can be used by tf2onnx
     model.save(params["model"]["model_pb_path"])
 
 

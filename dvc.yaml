@@ -28,6 +28,9 @@ stages:
     - eval
     outs:
     - ${model.model_pb_path}
+    - .mlem/model/model
+    - .mlem/model/model.mlem:
+        cache: false
     metrics:
     - ${train.metrics_path}
     plots:

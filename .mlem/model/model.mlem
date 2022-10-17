@@ -1,0 +1,35 @@
+artifacts:
+  data:
+    hash: b1903c0edbc0cf4ca40dad4c5d916654
+    size: 36666944
+    type: dvc
+    uri: model
+model_type:
+  io:
+    save_format: h5
+    type: tf_keras
+  methods:
+    predict:
+      args:
+      - name: data
+        type_:
+          type: unspecified
+      name: predict
+      returns:
+        type: unspecified
+    tensorflow_predict:
+      args: []
+      name: __call__
+      returns:
+        type: unspecified
+      varargs: args
+      varkw: kwargs
+  type: tf_keras
+object_type: model
+requirements:
+- module: keras
+  version: 2.9.0
+- module: tensorflow
+  version: 2.9.1
+- module: numpy
+  version: 1.21.1

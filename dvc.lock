@@ -140,3 +140,19 @@ stages:
     - path: models/onnx/model.onnx
       md5: dffdab019f606ca58b68afe854bddae4
       size: 36051265
+  generate_report:
+    cmd: 'echo "# DVC DAG" >> docs/report.md && dvc dag --show-md >> docs/report.md
+      && echo "# DVC Metrics: Last changes" >> docs/report.md && dvc metrics diff
+      --show-md --precision 3 >> docs/report.md && echo "# DVC Metrics: All" >> docs/report.md
+      && dvc metrics diff --all --show-md --precision 3 >> docs/report.md && echo
+      "# DVC Params: Last changes" >> docs/report.md && dvc params diff --no-path
+      --show-md >> docs/report.md && echo "# DVC Params: All" >> docs/report.md &&
+      dvc params diff --all --no-path --show-md >> docs/report.md '
+    deps:
+    - path: metrics/metrics_test.json
+      md5: 505c1f425eb58d1fc94f56d570893972
+      size: 5892
+    outs:
+    - path: docs/report.md
+      md5: ad13831322206953f3c6840f6889b99c
+      size: 22219

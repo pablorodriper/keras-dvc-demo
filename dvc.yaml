@@ -55,3 +55,21 @@ stages:
     - ${model.model_pb_path}
     outs:
     - ${model.model_onnx_path}
+
+  generate_report:
+    cmd: >-
+      echo "# DVC DAG" >> docs/report.md &&
+      dvc dag --show-md >> docs/report.md &&
+      echo "# DVC Metrics: Last changes" >> docs/report.md &&
+      dvc metrics diff --show-md --precision 3 >> docs/report.md &&
+      echo "# DVC Metrics: All" >> docs/report.md &&
+      dvc metrics diff --all --show-md --precision 3 >> docs/report.md &&
+      echo "# DVC Params: Last changes" >> docs/report.md &&
+      dvc params diff --no-path --show-md >> docs/report.md &&
+      echo "# DVC Params: All" >> docs/report.md &&
+      dvc params diff --all --no-path --show-md >> docs/report.md 
+    deps:
+    - ${test.metrics_path}
+    outs:
+    - docs/report.md:
+        cache: false
